@@ -9,6 +9,10 @@ export default function App() {
   const [words, setWords] = useState<WordData[]>([]);
 
   useEffect(() => {
+    console.log("Available voices:", window.speechSynthesis.getVoices());
+  }, []);
+
+  useEffect(() => {
     loadTSV("words.tsv").then(setWords);
   }, []);
 

@@ -24,10 +24,10 @@ export function WordItem({ item }: WordItemProps) {
     };
 
     if (synth.getVoices().length === 0) {
-      // まだボイス読み込み終わってないなら、onvoiceschanged待つ
-      synth.onvoiceschanged = speakNow;
+      synth.onvoiceschanged = () => {
+        speakNow();
+      };
     } else {
-      // もうボイスあるなら即発話
       speakNow();
     }
   };
