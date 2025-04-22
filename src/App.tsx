@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { loadTSV, WordData } from "./utils/tsvLoader";
 import { WordList } from "./components/WordList";
+import React from "react";
 
 export default function App() {
   const [words, setWords] = useState<WordData[]>([]);
 
   useEffect(() => {
-    loadTSV("/words.tsv").then(setWords);
+    loadTSV("words.tsv").then(setWords);
   }, []);
 
   return (

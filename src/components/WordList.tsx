@@ -1,5 +1,6 @@
 // src/components/WordList.tsx
 
+import React from "react";
 import { WordData } from "../utils/tsvLoader";
 import { WordItem } from "./WordItem";
 

@@ -1,5 +1,6 @@
 // src/components/WordItem.tsx
 
+import React from "react";
 import { WordData } from "../utils/tsvLoader";
 
 type WordItemProps = {
@@ -8,16 +9,27 @@ type WordItemProps = {
 
 export function WordItem({ item }: WordItemProps) {
   const speak = (text: string) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = speechSynthesis.getVoices();
-    const enVoice = voices.find((voice) => voice.lang.startsWith("en"));
+    const synth = window.speechSynthesis;
 
-    if (enVoice) {
-      utterance.voice = enVoice;
+    const speakNow = () => {
+      const voices = synth.getVoices();
+      const enVoice = voices.find((voice) => voice.lang.startsWith("en"));
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (enVoice) {
+        utterance.voice = enVoice;
+      }
+      utterance.lang = "en-US";
+      synth.speak(utterance);
+    };
+
+    if (synth.getVoices().length === 0) {
+      // まだボイス読み込み終わってないなら、onvoiceschanged待つ
+      synth.onvoiceschanged = speakNow;
+    } else {
+      // もうボイスあるなら即発話
+      speakNow();
     }
-
-    utterance.lang = "en-US";
-    speechSynthesis.speak(utterance);
   };
 
   return (
