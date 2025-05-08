@@ -2,12 +2,27 @@
 
 import React from "react";
 import { WordData } from "../utils/tsvLoader";
+import { useState, useEffect } from "react";
 
 type WordItemProps = {
   item: WordData;
+  index: number; // indexを受け取る
 };
 
-export function WordItem({ item }: WordItemProps) {
+export function WordItem({ item, index }: WordItemProps) {
+  // uniqueIdをitem.wordとindexを基に生成
+  const uniqueId = `word-item-${item.word}-${index}`;
+  const [rating, setRating] = useState<number>(() => {
+    // 初期値をローカルストレージから取得
+    const savedRating = localStorage.getItem(uniqueId);
+    return savedRating ? parseInt(savedRating, 10) : 0;
+  });
+
+  // 評価が変更されたらローカルストレージに保存
+  useEffect(() => {
+    localStorage.setItem(uniqueId, rating.toString());
+  }, [rating, uniqueId]);
+
   const speak = (text: string) => {
     const synth = window.speechSynthesis;
 
@@ -53,7 +68,29 @@ export function WordItem({ item }: WordItemProps) {
           🔊 Example
         </button>
       </div>
-      <p className="mt-1 text-gray-500">{item.example_ja}</p>
+      <div className="mt-4">
+        <p>Rating: {rating}/10</p>
+        <span className="star-rating">
+          {[...Array(10)].map((_, i) => (
+            <React.Fragment key={i}>
+              <label
+                htmlFor={`${uniqueId}-rate-${i + 1}`}
+                style={{ "--i": i + 1 } as React.CSSProperties}
+              >
+                <i className="fa-solid fa-star"></i>
+              </label>
+              <input
+                type="radio"
+                name={`${uniqueId}-rating`}
+                id={`${uniqueId}-rate-${i + 1}`}
+                value={i + 1}
+                checked={rating === i + 1}
+                onChange={() => setRating(i + 1)}
+              />
+            </React.Fragment>
+          ))}
+        </span>
+      </div>
     </div>
   );
 }
