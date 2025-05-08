@@ -11,8 +11,8 @@ export function WordList({ words }: WordListProps) {
   const [filterLetter, setFilterLetter] = useState(""); // アルファベットフィルタを管理
 
   // ローカルストレージから評価を取得してフィルタリング
-  const filteredWords = words.filter((word) => {
-    const uniqueId = `word-item-${word.word}`;
+  const filteredWords = words.filter((word, index) => {
+    const uniqueId = `word-item-${word.word}-${index}`; // indexを含めてuniqueIdを生成
     const savedRating = localStorage.getItem(uniqueId);
     const rating = savedRating ? parseInt(savedRating, 10) : 0;
 
@@ -24,6 +24,8 @@ export function WordList({ words }: WordListProps) {
 
     return matchesRating && matchesLetter;
   });
+
+  console.log("Filtered Words:", filteredWords);
 
   return (
     <div className="max-w-3xl mx-auto">
