@@ -58,7 +58,7 @@ export function WordItem({ item, index }: WordItemProps) {
           🔊 Word
         </button>
       </h2>
-      <p className="mt-1">{item.meaning}</p>
+      <p className="mt-2">{item.meaning}</p>
       <div className="mt-2 flex items-center gap-2">
         <p>{item.example}</p>
         <button
@@ -68,6 +68,7 @@ export function WordItem({ item, index }: WordItemProps) {
           🔊 Example
         </button>
       </div>
+      <p className="mt-2">{item.example_ja}</p>
       <div className="mt-4">
         <p>Rating: {rating}/10</p>
         <span className="star-rating">

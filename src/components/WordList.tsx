@@ -38,7 +38,7 @@ export function WordList({ words }: WordListProps) {
           id="minRating"
           value={minRating}
           onChange={(e) => setMinRating(parseInt(e.target.value, 10))}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+          className="dropdown2-link"
         >
           {[...Array(11)].map((_, i) => (
             <option key={i} value={i}>
@@ -58,7 +58,7 @@ export function WordList({ words }: WordListProps) {
           value={filterLetter}
           onChange={(e) => setFilterLetter(e.target.value)}
           maxLength={1} // 1文字だけ入力可能
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+          className="input8 pl-3"
           placeholder="Enter a letter"
         />
       </div>

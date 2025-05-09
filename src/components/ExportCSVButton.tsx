@@ -30,7 +30,9 @@ export function ExportCSVButton() {
   return (
     <button
       onClick={exportToCSV}
-      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+      className="w-28 h-10 text-white cursor-pointor text-base font-bold
+      text-center outline-none border-none relative rounded-[10px] bg-[#0c0c0c]
+      hover:bg-[#2b2bff] hover:top-0.5 transition-all duration-300 ease-in-out shadow-inner"
     >
       Export to CSV
     </button>
