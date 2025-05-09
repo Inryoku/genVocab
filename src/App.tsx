@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Word Reader</h1>
+      <h1 className="text-2xl font-bold mb-4">📖Word Reader</h1>
       <ExportCSVButton />
       <WordList words={words} />
     </div>
