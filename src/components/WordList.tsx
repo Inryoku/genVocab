@@ -50,16 +50,15 @@ export function WordList({ words }: WordListProps) {
 
       <div className="mb-4">
         <label htmlFor="filterLetter" className="block text-sm font-medium">
-          Filter by First Letter:
+          Filter by First Two Letter:
         </label>
         <input
           id="filterLetter"
           type="text"
           value={filterLetter}
           onChange={(e) => setFilterLetter(e.target.value)}
-          maxLength={1} // 1文字だけ入力可能
-          className="input8 pl-3"
-          placeholder="Enter a letter"
+          maxLength={2} // 2文字だけ入力可能
+          className="input8 pl-3 w-12"
         />
       </div>
 
