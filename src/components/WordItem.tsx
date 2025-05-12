@@ -17,6 +17,7 @@ export function WordItem({ item, index }: WordItemProps) {
     const savedRating = localStorage.getItem(uniqueId);
     return savedRating ? parseInt(savedRating, 10) : 0;
   });
+  const [isMeaningVisible, setIsMeaningVisible] = useState(false); // meaningの表示状態を管理
 
   // 評価が変更されたらローカルストレージに保存
   useEffect(() => {
@@ -58,7 +59,16 @@ export function WordItem({ item, index }: WordItemProps) {
           🔊 Word
         </button>
       </h2>
-      <p className="mt-2">{item.meaning}</p>
+      <p
+        className={`mt-2 cursor-pointer text-gray-500 transition-all duration-300 ${
+          isMeaningVisible
+            ? "text-black opacity-100"
+            : "text-black opacity-50 blur-sm"
+        }`}
+        onClick={() => setIsMeaningVisible(!isMeaningVisible)}
+      >
+        {item.meaning}
+      </p>
       <div className="mt-2 flex items-center gap-2">
         <p>{item.example}</p>
         <button
