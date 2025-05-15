@@ -60,10 +60,8 @@ export function WordItem({ item, index }: WordItemProps) {
         </button>
       </h2>
       <p
-        className={`mt-2 cursor-pointer text-gray-500 transition-all duration-300 ${
-          isMeaningVisible
-            ? "text-black opacity-100"
-            : "text-black opacity-50 blur-sm"
+        className={`mt-2 cursor-pointer text-black transition-all duration-300 ${
+          isMeaningVisible ? "opacity-100" : "opacity-50 blur-sm"
         }`}
         onClick={() => setIsMeaningVisible(!isMeaningVisible)}
       >
