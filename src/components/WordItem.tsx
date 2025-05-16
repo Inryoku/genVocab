@@ -28,6 +28,12 @@ export function WordItem({ item, index }: WordItemProps) {
     const synth = window.speechSynthesis;
 
     const speakNow = () => {
+      // タブが非アクティブなら無視（必要なら後で再試行もあり）
+      if (document.visibilityState !== "visible") return;
+
+      // 競合防止
+      synth.cancel();
+
       const voices = synth.getVoices();
       const enVoice = voices.find((voice) => voice.lang.startsWith("en"));
 

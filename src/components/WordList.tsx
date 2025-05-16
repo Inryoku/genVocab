@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { WordData } from "../utils/tsvLoader";
 import { WordItem } from "./WordItem";
 
@@ -9,6 +9,7 @@ type WordListProps = {
 export function WordList({ words }: WordListProps) {
   const [minRating, setMinRating] = useState(0); // 最低評価を管理
   const [filterLetter, setFilterLetter] = useState(""); // アルファベットフィルタを管理
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // ローカルストレージから評価を取得してフィルタリング
   const filteredWords = words
@@ -29,10 +30,14 @@ export function WordList({ words }: WordListProps) {
       return matchesRating && matchesLetter;
     });
 
+  const handleTapOutside = () => {
+    inputRef.current?.blur();
+  };
+
   console.log("Filtered Words:", filteredWords);
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div onClick={handleTapOutside} className="max-w-3xl mx-auto">
       {/* フィルタリングUI */}
       <div className="mb-4">
         <label htmlFor="minRating" className="block text-sm font-medium">
@@ -59,6 +64,7 @@ export function WordList({ words }: WordListProps) {
         <input
           id="filterLetter"
           type="text"
+          ref={inputRef}
           value={filterLetter}
           onChange={(e) => setFilterLetter(e.target.value)}
           maxLength={2} // 2文字だけ入力可能
