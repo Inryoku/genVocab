@@ -23,6 +23,17 @@
   text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
 }
 
+.star-rating label:has(~ :checked) i.star-bonus {
+  color: #0099ff !important;
+  text-shadow: 0 0 2px #ffffff, 0 0 10px #80d8ff; /* お好みで調整 */
+}
+.star-rating label:is(:hover, :has(~ :hover)) i.star-bonus {
+  color: #a4dbff;
+  animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
+  /* 必要ならtransformも追加 */
+  transform: scale(1.35);
+}
+
 @keyframes jump {
   0%,
   50% {

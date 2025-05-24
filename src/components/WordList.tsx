@@ -31,13 +31,13 @@ export function WordList({ words }: WordListProps) {
     });
 
   const handleTapOutside = () => {
-    inputRef.current?.blur();
+    (inputRef.current as any)?.blur({ preventScroll: true });
   };
 
   console.log("Filtered Words:", filteredWords);
 
   return (
-    <div onClick={handleTapOutside} className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto">
       {/* フィルタリングUI */}
       <div className="mb-4">
         <label htmlFor="minRating" className="block text-sm font-medium">
@@ -49,7 +49,7 @@ export function WordList({ words }: WordListProps) {
           onChange={(e) => setMinRating(parseInt(e.target.value, 10))}
           className="dropdown2-link"
         >
-          {[...Array(11)].map((_, i) => (
+          {[...Array(16)].map((_, i) => (
             <option key={i} value={i}>
               {i}
             </option>
@@ -67,15 +67,16 @@ export function WordList({ words }: WordListProps) {
           ref={inputRef}
           value={filterLetter}
           onChange={(e) => setFilterLetter(e.target.value)}
-          maxLength={2} // 2文字だけ入力可能
+          maxLength={2}
           className="input8 pl-3 w-12"
         />
       </div>
-
-      {/* フィルタリングされた単語を表示 */}
-      {filteredWords.map(({ word, index }) => (
-        <WordItem key={`${word.word}-${index}`} item={word} index={index} />
-      ))}
+      <div onClick={handleTapOutside}>
+        {/* フィルタリングされた単語を表示 */}
+        {filteredWords.map(({ word, index }) => (
+          <WordItem key={`${word.word}-${index}`} item={word} index={index} />
+        ))}
+      </div>
     </div>
   );
 }

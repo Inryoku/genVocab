@@ -20,6 +20,7 @@ export default function App() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">📖Word Reader</h1>
+      <p className="mb-4 text-zinc-400">Ver. 1.2</p>
       <ExportCSVButton />
       <WordList words={words} />
     </div>

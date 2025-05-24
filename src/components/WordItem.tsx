@@ -86,24 +86,76 @@ export function WordItem({ item, index }: WordItemProps) {
       <div className="mt-4">
         <p>Rating: {rating}/10</p>
         <span className="star-rating">
-          {[...Array(10)].map((_, i) => (
-            <React.Fragment key={i}>
-              <label
-                htmlFor={`${uniqueId}-rate-${i + 1}`}
-                style={{ "--i": i + 1 } as React.CSSProperties}
-              >
-                <i className="fa-solid fa-star"></i>
-              </label>
-              <input
-                type="radio"
-                name={`${uniqueId}-rating`}
-                id={`${uniqueId}-rate-${i + 1}`}
-                value={i + 1}
-                checked={rating === i + 1}
-                onChange={() => setRating(i + 1)}
-              />
-            </React.Fragment>
-          ))}
+          {/* ratingが11以下なら1〜10個目を表示 */}
+          {rating <= 11 && (
+            <>
+              {[...Array(10)].map((_, i) => (
+                <React.Fragment key={i}>
+                  <label
+                    htmlFor={`${uniqueId}-rate-${i + 1}`}
+                    style={{ "--i": i + 1 } as React.CSSProperties}
+                  >
+                    <i className="fa-solid fa-star"></i>
+                  </label>
+                  <input
+                    type="radio"
+                    name={`${uniqueId}-rating`}
+                    id={`${uniqueId}-rate-${i + 1}`}
+                    value={i + 1}
+                    checked={rating === i + 1}
+                    onChange={() => setRating(i + 1)}
+                  />
+                </React.Fragment>
+              ))}
+              {/* 10個目が選択されたときだけ11〜15個目を表示 */}
+              {rating >= 10 && (
+                <>
+                  <br />
+                  {[...Array(10)].map((_, i) => (
+                    <React.Fragment key={10 + i}>
+                      <label
+                        htmlFor={`${uniqueId}-rate-${11 + i}`}
+                        style={{ "--i": 11 + i } as React.CSSProperties}
+                      >
+                        <i className="fa-solid fa-star star-bonus"></i>
+                      </label>
+                      <input
+                        type="radio"
+                        name={`${uniqueId}-rating`}
+                        id={`${uniqueId}-rate-${11 + i}`}
+                        value={11 + i}
+                        checked={rating === 11 + i}
+                        onChange={() => setRating(11 + i)}
+                      />
+                    </React.Fragment>
+                  ))}
+                </>
+              )}
+            </>
+          )}
+          {/* ratingが12以上なら11〜15個目だけ表示 */}
+          {rating >= 12 && (
+            <>
+              {[...Array(10)].map((_, i) => (
+                <React.Fragment key={10 + i}>
+                  <label
+                    htmlFor={`${uniqueId}-rate-${11 + i}`}
+                    style={{ "--i": 11 + i } as React.CSSProperties}
+                  >
+                    <i className="fa-solid fa-star star-bonus"></i>
+                  </label>
+                  <input
+                    type="radio"
+                    name={`${uniqueId}-rating`}
+                    id={`${uniqueId}-rate-${11 + i}`}
+                    value={11 + i}
+                    checked={rating === 11 + i}
+                    onChange={() => setRating(11 + i)}
+                  />
+                </React.Fragment>
+              ))}
+            </>
+          )}
         </span>
       </div>
     </div>
