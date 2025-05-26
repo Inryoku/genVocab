@@ -7,11 +7,31 @@ type WordListProps = {
 };
 
 export function WordList({ words }: WordListProps) {
-  const [minRating, setMinRating] = useState(0); // 最低評価を管理
-  const [filterLetter, setFilterLetter] = useState(""); // アルファベットフィルタを管理
+  const [minRating, setMinRating] = useState(0);
+  const [ratingMode, setRatingMode] = useState<"min" | "exact">("min");
+  const [firstLetter, setFirstLetter] = useState("");
+  const [secondLetter, setSecondLetter] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // ローカルストレージから評価を取得してフィルタリング
+  // 1文字目の候補
+  const firstLetters = Array.from(
+    new Set(words.map((w) => w.word[0]?.toLowerCase()))
+  )
+    .filter(Boolean)
+    .sort();
+
+  // 2文字目の候補（1文字目で絞り込み）
+  const secondLetters = Array.from(
+    new Set(
+      words
+        .filter((w) => !firstLetter || w.word[0]?.toLowerCase() === firstLetter)
+        .map((w) => w.word[1]?.toLowerCase())
+    )
+  )
+    .filter(Boolean)
+    .sort();
+
+  // フィルタリング
   const filteredWords = words
     .map((word, index) => ({
       word,
@@ -20,14 +40,17 @@ export function WordList({ words }: WordListProps) {
     }))
     .filter(({ word, rating }) => {
       const ratingValue = rating ? parseInt(rating, 10) : 0;
+      const matchesRating =
+        ratingMode === "min"
+          ? ratingValue >= minRating
+          : ratingValue === minRating;
 
-      // 最低評価とアルファベットフィルタを適用
-      const matchesRating = ratingValue >= minRating;
-      const matchesLetter =
-        filterLetter === "" ||
-        word.word.toLowerCase().startsWith(filterLetter.toLowerCase());
+      // 2段階フィルタ
+      const w = word.word.toLowerCase();
+      const matchesFirst = !firstLetter || w[0] === firstLetter;
+      const matchesSecond = !secondLetter || w[1] === secondLetter;
 
-      return matchesRating && matchesLetter;
+      return matchesRating && matchesFirst && matchesSecond;
     });
 
   const handleTapOutside = () => {
@@ -41,7 +64,7 @@ export function WordList({ words }: WordListProps) {
       {/* フィルタリングUI */}
       <div className="mb-4">
         <label htmlFor="minRating" className="block text-sm font-medium">
-          Minimum Rating:
+          Rating Filter:
         </label>
         <select
           id="minRating"
@@ -55,21 +78,69 @@ export function WordList({ words }: WordListProps) {
             </option>
           ))}
         </select>
+        <label className="ml-2">
+          <input
+            type="radio"
+            name="ratingMode"
+            checked={ratingMode === "min"}
+            onChange={() => setRatingMode("min")}
+            className="mr-1"
+          />
+          Minimum
+        </label>
+        <label className="ml-2">
+          <input
+            type="radio"
+            name="ratingMode"
+            checked={ratingMode === "exact"}
+            onChange={() => setRatingMode("exact")}
+            className="mr-1"
+          />
+          Exact
+        </label>
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="filterLetter" className="block text-sm font-medium">
-          Filter by First Two Letter:
-        </label>
-        <input
-          id="filterLetter"
-          type="text"
-          ref={inputRef}
-          value={filterLetter}
-          onChange={(e) => setFilterLetter(e.target.value)}
-          maxLength={2}
-          className="input8 pl-3 w-12"
-        />
+      <div className="mb-4 flex gap-2 items-end">
+        <div>
+          <label htmlFor="firstLetter" className="block text-sm font-medium">
+            1st Letter:
+          </label>
+          <select
+            id="firstLetter"
+            value={firstLetter}
+            onChange={(e) => {
+              setFirstLetter(e.target.value);
+              setSecondLetter(""); // 1文字目変更時は2文字目リセット
+            }}
+            className="dropdown2-link w-16"
+          >
+            <option value="">All</option>
+            {firstLetters.map((l) => (
+              <option key={l} value={l}>
+                {l.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="secondLetter" className="block text-sm font-medium">
+            2nd Letter:
+          </label>
+          <select
+            id="secondLetter"
+            value={secondLetter}
+            onChange={(e) => setSecondLetter(e.target.value)}
+            className="dropdown2-link w-16"
+            disabled={!firstLetter}
+          >
+            <option value="">All</option>
+            {secondLetters.map((l) => (
+              <option key={l} value={l}>
+                {l.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div onClick={handleTapOutside}>
         {/* フィルタリングされた単語を表示 */}

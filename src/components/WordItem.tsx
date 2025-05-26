@@ -82,9 +82,12 @@ export function WordItem({ item, index }: WordItemProps) {
           🔊 Example
         </button>
       </div>
+
       <p className="mt-2">{item.example_ja}</p>
       <div className="mt-4">
-        <p>Rating: {rating}/10</p>
+        <p>
+          Rating: {rating}/{rating <= 10 ? 10 : 20}
+        </p>
         <span className="star-rating">
           {/* ratingが11以下なら1〜10個目を表示 */}
           {rating <= 11 && (
